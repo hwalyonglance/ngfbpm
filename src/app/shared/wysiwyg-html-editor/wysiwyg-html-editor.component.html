@@ -1,0 +1,73 @@
+<div fxLayout='column' style="min-width: 560px;max-width: 960px">
+	<div fxFlex class='wysiwyg-html-editor-toolbar 	wysiwyg-html-editor-toolbar-{{counter}}'>
+		<button (click)='execCommand("undo")' mat-button matTooltip='Undo'><mat-icon>undo</mat-icon></button>
+		<button (click)='execCommand("redo")' mat-button matTooltip='Redo'><mat-icon>redo</mat-icon></button>
+		<button (click)='execCommand("selectAll")' mat-button matTooltip='Select All'><mat-icon>select_all</mat-icon></button>
+		<button (click)='execCommand("cut")' mat-button matTooltip='Cut'><mat-icon>content_cut</mat-icon></button>
+		<button (click)='execCommand("copy")' mat-button matTooltip='Copy'><mat-icon>content_copy</mat-icon></button>
+		<button (click)='execCommand("bold")' mat-button matTooltip='Bold'><mat-icon>format_bold</mat-icon></button>
+		<button (click)='execCommand("italic")' mat-button matTooltip='Italic'><mat-icon>format_italic</mat-icon></button>
+		<button (click)='execCommand("strikeThrough")' mat-button matTooltip='Strikethrough'><mat-icon>strikethrough_s</mat-icon></button>
+		<button (click)='execCommand("underline")' mat-button matTooltip='Underline'><mat-icon>format_underlined</mat-icon></button>
+		<button (click)='execCommand("justifyLeft")' mat-button matTooltip='Align Left'><mat-icon>format_align_left</mat-icon></button>
+		<button (click)='execCommand("justifyCenter")' mat-button matTooltip='Align Center'><mat-icon>format_align_center</mat-icon></button>
+		<button (click)='execCommand("justifyRight")' mat-button matTooltip='Align Right'><mat-icon>format_align_right</mat-icon></button>
+		<button (click)='execCommand("justifyFull")' mat-button matTooltip='Align Justify'><mat-icon>format_align_justify</mat-icon></button>
+		<button (click)='execCommand("insertOrderedList")' mat-button matTooltip='Insert OL List'><mat-icon>format_list_numbered</mat-icon></button>
+		<button (click)='execCommand("insertUnorderedList")' mat-button matTooltip='Insert UL List'><mat-icon>format_list_bulleted</mat-icon></button>
+		<button (click)='execCommand("indent")' mat-button matTooltip='Indent'><mat-icon>format_indent_increase</mat-icon></button>
+		<button (click)='execCommand("outdent")' mat-button matTooltip='Outdent'><mat-icon>format_indent_decrease</mat-icon></button>
+		<button (click)='execCommand("subscript")' mat-button matTooltip='Subscript'><mat-icon>format_subscript</mat-icon></button>
+		<button (click)='execCommand("superscript")' mat-button matTooltip='Superscript'><mat-icon>format_superscript</mat-icon></button>
+		<button (click)='execCommand("createLink", "https://youtube.com")' mat-button matTooltip='Insert Link'><mat-icon>insert_link</mat-icon></button>
+		<button (click)='execCommand("unlink")' mat-button matTooltip='Remove Link'><mat-icon>link_off</mat-icon></button>
+		<button (click)='execCommand("insertParagraph")' mat-button matTooltip='Paragraph'><mat-icon>paragraph</mat-icon></button>
+		<button (click)='execCommand("insertHorizontalRule")' mat-button matTooltip='Horizontal Rule'><mat-icon>hr</mat-icon></button>
+		<button (click)='execCommand("foreColor", "#FFF")' mat-button matTooltip='Fore Color'><mat-icon>format_color_text</mat-icon></button>
+		<button (click)='execCommand("hiliteColor", "#000")' mat-button matTooltip='Backgroud Color'><mat-icon>format_color_fill</mat-icon></button>
+		<button (click)='execCommand("insertImage", "https://via.placeholder.com/300x300")' mat-button matTooltip='Insert Image'><mat-icon>image</mat-icon></button>
+		<button *ngIf='!isRawMode; else elseToggleSource' (click)='toggleSource()' mat-button matTooltip='Toggle Code'><mat-icon>code</mat-icon></button>
+		<ng-template #elseToggleSource>
+			<button (click)='toggleSource()' mat-raised-button matTooltip='Toggle Code'><mat-icon>code</mat-icon></button>
+		</ng-template>
+		<button *ngIf='isEditMode; else elseToggleEditMode' (click)='toggleEditMode()' mat-button matTooltip='Toggle Edit Mode'><mat-icon>toggle</mat-icon></button>
+		<ng-template #elseToggleEditMode>
+			<button (click)='toggleEditMode()' mat-raised-button matTooltip='Toggle Edit Mode'><mat-icon>toggle</mat-icon></button>
+		</ng-template>
+		<mat-form-field class='w100px' style='margin-right: 12px'>
+			<mat-select #headerFormat (change)='execCommand("formatBlock", headerFormat.value)' placeholder='Header'>
+			<mat-option value='H1'>Header 1</mat-option>
+			<mat-option value='H2'>Header 2</mat-option>
+			<mat-option value='H3'>Header 3</mat-option>
+			<mat-option value='H4'>Header 4</mat-option>
+			<mat-option value='H5'>Header 5</mat-option>
+			<mat-option value='H6'>Header 6</mat-option>
+		</mat-select>
+		</mat-form-field>
+		<mat-form-field class='w100px' style='margin-right: 12px'>
+			<mat-select #fontFormat (change)='execCommand("fontName", fontFormat.value)' placeholder='Font'>
+				<mat-option value='Arial'>Arial</mat-option>
+				<mat-option value='Comic Sans MS'>Comic Sans MS</mat-option>
+				<mat-option value='Courier'>Courier</mat-option>
+				<mat-option value='Georgia'>Georgia</mat-option>
+				<mat-option value='Tahoma'>Tahoma</mat-option>
+				<mat-option value='Times New Roman'>Times New Roman</mat-option>
+				<mat-option value='Verdana'>Verdana</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<mat-form-field style='margin-right: 12px; width: 70px'>
+			<mat-select #fontSizeFormat (change)='execCommand("fontSize", fontSizeFormat.value)' placeholder='Font Size'>
+				<mat-option value='1'>1</mat-option>
+				<mat-option value='2'>2</mat-option>
+				<mat-option value='3'>3</mat-option>
+				<mat-option value='4'>4</mat-option>
+				<mat-option value='5'>5</mat-option>
+				<mat-option value='6'>6</mat-option>
+				<mat-option value='7'>7</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
+	<div fxFlex class='wysiwyg-html-editor-frame-wrapper wysiwyg-html-editor-frame-wrapper-{{counter}}'>
+		<iframe #editor class="wysiwyg-html-editor-frame wysiwyg-html-editor-frame-{{counter}}"></iframe>
+	</div>
+</div>

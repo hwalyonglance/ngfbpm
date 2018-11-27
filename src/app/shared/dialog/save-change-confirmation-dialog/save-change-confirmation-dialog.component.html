@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Simpan perubahan?</h1>
+<div mat-dialog-content>
+	<p>
+		Ini akan merubah data sebelumnya.
+	</p>
+</div>
+<div mat-dialog-actions>
+	<button (click)='cancel.next()' color='primary' mat-button>Batal</button>
+	<button cdkFocusInitial (click)='accept.next()' color='primary' mat-button>Terima</button>
+</div>

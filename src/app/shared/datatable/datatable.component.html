@@ -1,0 +1,150 @@
+<mat-toolbar color='primary'>
+	<button *ngIf='showMainMenuTrigger' mat-icon-button
+		[matMenuTriggerFor]='mainMenu'>
+		<mat-icon>more_vert</mat-icon>
+	</button>
+	<mat-menu #mainMenu='matMenu' xPosition='after'>
+		<button *ngIf='showCreateMenu' (click)='create()' mat-menu-item>
+			<mat-icon>create</mat-icon> Buat
+		</button>
+		<button (click)='filterColumn()' mat-menu-item>
+			<mat-icon>view_column</mat-icon> Kolom
+		</button>
+		<button (click)='refresh()' mat-menu-item>
+			<mat-icon>refresh</mat-icon> Segarkan
+		</button>
+		<button (click)='printAll()' mat-menu-item>
+			<mat-icon>print</mat-icon> PDF
+		</button>
+		<!-- <button *ngIf='showDefaultMainMenu' mat-menu-item [matMenuTriggerFor]='printMenu'>
+			<mat-icon>print</mat-icon> Print
+		</button> -->
+		<button *ngFor='let menu of extraMainMenus'
+			(click)='menu.action()' mat-menu-item>
+			<mat-icon>{{menu.icon}}</mat-icon>
+			{{ menu.label }}
+		</button>
+	</mat-menu>
+	<mat-menu #printMenu>
+		<button mat-menu-item (click)='printAll()'>
+			All
+		</button>
+		<button mat-menu-item (click)='printSelected()'>
+			Selected
+		</button>
+		<button mat-menu-item (click)='printPerPeriod()'>
+			Per Period
+		</button>
+		<button mat-menu-item>
+			Filter
+		</button>
+	</mat-menu>
+	<span>{{ titleText }}</span>
+	<span fxFlex='fill'></span>
+	<!-- <mat-form-field style='width: 180px' floatLabel='never'>
+		<input #filter matInput placeholder='Cari'>
+	</mat-form-field> -->
+</mat-toolbar>
+<form [formGroup]='form'>
+	<table [dataSource]='dataSource' mat-table matSort style="width: 100%">
+		<tr *matHeaderRowDef="displayedColumnsId; sticky: true" mat-header-row></tr>
+		<tr *matHeaderRowDef="displayedColumnsIdSearch; sticky: true" mat-header-row></tr>
+		<tr *matRowDef='let row; columns: displayedColumnsId' mat-row></tr>
+		<ng-container matColumnDef='_index' sticky>
+			<th mat-header-cell *matHeaderCellDef> No </th>
+			<td mat-cell *matCellDef='let row; let i = index'> {{ i+1 }} </td>
+		</ng-container>
+		<ng-container matColumnDef='_index_search' sticky>
+			<th mat-header-cell *matHeaderCellDef></th>
+		</ng-container>
+		<ng-container *ngFor='let col of columns'>
+			<ng-container matColumnDef='{{col.id}}'>
+				<th *matHeaderCellDef mat-header-cell mat-sort-header='{{ col.id }}'>
+					{{ col.label }}
+				</th>
+				<td *matCellDef='let row' mat-cell>
+					{{ row[col.id] }}
+				</td>
+			</ng-container>
+			<ng-container matColumnDef='{{col.id+"_search"}}'>
+				<th mat-header-cell *matHeaderCellDef style='padding-left: 4px; padding-right: 4px;'>
+					<mat-form-field *ngIf='form.get(col.id)' class='center' style='width: 100%'>
+						<input [formControlName]='col.id' matInput placeholder='Cari {{ col.label }}'>
+					</mat-form-field>
+				</th>
+			</ng-container>
+		</ng-container>
+		<ng-container matColumnDef='_actions' stickyEnd>
+			<th *matHeaderCellDef mat-header-cell></th>
+			<td *matCellDef='let row' mat-cell style="text-align: center">
+				<button *ngIf='showRowMenuTrigger' [matMenuTriggerFor]='actionMenu' mat-icon-button type='button'>
+					<mat-icon>more_vert</mat-icon>
+				</button>
+				<mat-menu #actionMenu='matMenu' xPosition='before'>
+					<!-- <button (click)='handleEvent("PrintById", row[id])' mat-menu-item>
+						<mat-icon>print</mat-icon>
+						Print
+					</button> -->
+					<button *ngIf='showEditMenu' (click)='editById(row)' mat-menu-item>
+						<mat-icon>edit</mat-icon>
+						Edit
+					</button>
+					<button *ngIf='showDeleteMenu' (click)='deleteById(row)' mat-menu-item>
+						<mat-icon>delete</mat-icon>
+						Delete
+					</button>
+					<button *ngFor='let menu of extraRowMenus' (click)='menu.action(row)' mat-menu-item>
+						<mat-icon>{{menu.icon}}</mat-icon>
+						{{ menu.label }}
+					</button>
+				</mat-menu>
+			</td>
+		</ng-container>
+		<ng-container matColumnDef='_actions_search' stickyEnd>
+			<th mat-header-cell *matHeaderCellDef style="text-align: center">
+				<mat-checkbox #caseSensitiveRef color='primary' matTooltip='Case Sensitive'></mat-checkbox>
+			</th>
+		</ng-container>
+	</table>
+</form>
+<mat-paginator #paginator [length]='dataSource.data.length' [pageIndex]='0' [pageSize]='10' [pageSizeOptions]='[10, 25, 50, 125, 250]'></mat-paginator>
+
+<ng-template #deleteByIdTemplateRef let-data let-dialogRef='dialogRef'>
+	<h1 mat-dialog-title>Hapus data dengan id {{ data.id }}</h1>
+	<div mat-dialog-content>
+		<p>
+			Data tidak bisa dikembalikan setelah dihapus.
+		</p>
+		<!-- {{ data | json }} -->
+	</div>
+	<div mat-dialog-actions>
+		<button color='primary' (click)='dialogRef.close()' mat-button>
+			Batal
+		</button>
+		<button cdkFocusInitial color='warn' (click)='data._delete()' mat-button>
+			Hapus
+		</button>
+	</div>
+</ng-template>
+
+<ng-template #deleteByIdSuccessTemplateRef let-data let-dialogRef='dialogRef'>
+	<!-- <h1 mat-dialog-title></h1> -->
+	<div mat-dialog-content>
+		<p>
+			Data dengan id {{ data.id }} berhasil dihapus
+		</p>
+	</div>
+	<div mat-dialog-actions>
+		<button color='primary' (click)='dialogRef.close()' mat-button>Tutup</button>
+	</div>
+</ng-template>
+
+<ng-template #httpResponseErrorTemplateRef let-data let-dialogRef='dialogRef'>
+	<h1 mat-dialog-title>{{ data.title }}</h1>
+	<div mat-dialog-content>
+		<p> {{ data.error | json }} </p>
+	</div>
+	<div mat-dialog-actions>
+		<button color='primary' (click)='dialogRef.close()' mat-button style="float: right">Tutup</button>
+	</div>
+</ng-template>

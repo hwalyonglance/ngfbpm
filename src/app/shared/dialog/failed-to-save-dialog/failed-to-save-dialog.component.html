@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Gagal ketika menyimpan data</h1>
+<div mat-dialog-content>
+	<p>
+		{{ data | json }}
+	</p>
+</div>
+<div mat-dialog-actions>
+	<button cdkFocusInitial (click)='close.next()' color='primary' mat-button mat-dialog-close>Tutup</button>
+</div>

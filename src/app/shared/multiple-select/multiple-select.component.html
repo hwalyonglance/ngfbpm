@@ -1,0 +1,31 @@
+<div class="example-container">
+	<h4>{{unselectedText}}</h4>
+	<mat-form-field>
+		<input #filterDatasetRef matInput placeholder="Cari">
+	</mat-form-field>
+	<div cdkDropList
+		#unselectedDataRef="cdkDropList"
+		[cdkDropListData]="unselectedData"
+		[cdkDropListConnectedTo]="[selectedDataRef]"
+		class="example-list"
+		(cdkDropListDropped)="drop($event)"
+		id='multiple-select-unselected-{{counter}}'>
+		<div *ngFor="let item of unselectedData" cdkDrag class="example-box">{{item.label}}</div>
+	</div>
+</div>
+
+<div class="example-container">
+	<h4>{{unselectedText}}</h4>
+	<mat-form-field>
+		<input #filterSelectedDataRef matInput placeholder="Cari">
+	</mat-form-field>
+	<div cdkDropList
+		#selectedDataRef="cdkDropList"
+		[cdkDropListData]="selectedData"
+		[cdkDropListConnectedTo]="[unselectedDataRef]"
+		class="example-list"
+		(cdkDropListDropped)="drop($event)"
+		id='multiple-select-selected-{{counter}}'>
+		<div *ngFor="let item of selectedData" cdkDrag class="example-box">{{item.label}}</div>
+	</div>
+</div>

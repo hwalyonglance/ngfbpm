@@ -1,0 +1,10 @@
+<!-- <h1 mat-dialog-title></h1> -->
+<div mat-dialog-content>
+	<p>
+		Yakin ingin menyimpan data ini?
+	</p>
+</div>
+<div mat-dialog-actions>
+	<button (click)='cancel.next()' color='primary' mat-button>Batal</button>
+	<button cdkFocusInitial (click)='accept.next()' color='primary' mat-button>Simpan</button>
+</div>
