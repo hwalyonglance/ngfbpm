@@ -36,6 +36,9 @@ import {
 	MatTableDataSource,
 } from '@angular/material'
 import {
+	DomSanitizer,
+} from '@angular/platform-browser'
+import {
 	ActivatedRoute,
 	Router,
 } from '@angular/router'
@@ -72,6 +75,8 @@ export class DatatableComponent<T={id:string}> implements AfterViewInit, AfterCo
 	@Input() showCreateMenu: boolean = true
 	@Input() showDeleteMenu: boolean = true
 	@Input() showEditMenu: boolean = true
+	@Input() showRefreshMenu: boolean = true
+	@Input() showPrintAllMenu: boolean = true
 	@Input() showMainMenuTrigger: boolean = true
 	@Input() showRowMenuTrigger: boolean = true
 	@Input() titleText: string
@@ -175,13 +180,8 @@ export class DatatableComponent<T={id:string}> implements AfterViewInit, AfterCo
 		let columns = [
 			{ id: '_index', label: 'No', hidden: false },
 			...this.columns.filter(c => !c.hidden),
+			{ id: '_actions', label: '', hidden: false },
 		]
-		if (this.showRowMenuTrigger) {
-			columns = [
-				...columns,
-				{ id: '_actions', label: '', hidden: false },
-			]
-		}
 		return columns
 	}
 	get displayedColumnsId() {
@@ -205,6 +205,7 @@ export class DatatableComponent<T={id:string}> implements AfterViewInit, AfterCo
 	multipleSelectComponentDialogRef: MatDialogRef<MultipleSelectComponent>
 
 	constructor(
+		public sanitizer: DomSanitizer,
 		private _api: ApiService,
 		private _dialog: MatDialog,
 		private _fb: FormBuilder,
@@ -231,20 +232,23 @@ export class DatatableComponent<T={id:string}> implements AfterViewInit, AfterCo
 			return Object.keys(col)
 				.map(k => {
 					const search = filter[k]
-					const str = col[k].toString()
+					const str = (col[k] == null ? '' : col[k]).toString()
 					if (this.filterCaseSensitive) {
 						return str.indexOf(search) !== -1
 					}
-					return str.toLowerCase().indexOf(search.toLowerCase()) !== -1
+					console.log(str, search, Math.random())
+					return str.toLowerCase().indexOf((search == null ? '' : search).toString().toLowerCase()) !== -1
 				})
 				.every(v => v)
 		}
+		this.setData()
 	}
 	setData(params = {}, errorTitle = 'Gagal mengambil data') {
 		this._api.get(this.col)
 			.valueChanges()
 			.subscribe((res: any) => {
-				this.dataSource.data = res.data
+				console.log(res)
+				this.dataSource.data = res
 				this._snackBar.open('Berhasil mengambil data')._dismissAfter(4000)
 			}, error => {
 				this._dialog.open(this.httpResponseErrorTemplateRef, {

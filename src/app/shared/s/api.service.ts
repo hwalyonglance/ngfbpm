@@ -17,10 +17,14 @@ export class ApiService {
 		return Date.now()
 	}
 	constructor(
-		public afs: AngularFirestore,
+		private afs: AngularFirestore,
 	) {}
+
 	check(col: string, key: string, value: any) {
 		return this.afs.collection(col, ref => ref.where(key, '==', value));
+	}
+	createId() {
+		return this.afs.createId()
 	}
 	get(col: string) {
 		return this.afs.collection(col)
@@ -32,19 +36,19 @@ export class ApiService {
 			...data
 		}
 		if (uid == '') {
-			return this.afs.collection(col).add(_data);
+			return from(this.afs.collection(col).add(_data));
 		} else {
-			return this.afs.collection(col).doc(uid).set(_data)
+			return from(this.afs.collection(col).doc(uid).set(_data))
 		}
 	}
-	update(col: string, uid: string, data): Promise<void> {
-		return this.afs.collection(col).doc(uid).update({ ...data, updatedAt: this.timestamp });
+	update(col: string, uid: string, data): Observable<void> {
+		return from(this.afs.collection(col).doc(uid).update({ ...data, updatedAt: this.timestamp }));
 	}
 	upsert(col: string, uid: string, data) {
 		const doc =  this.afs.collection(col).doc(uid).snapshotChanges().pipe(take(1)).toPromise();
-		return doc.then((snap): any => {
+		return from(doc.then((snap): any => {
 			return snap.payload.exists ? this.update(col, uid, data) : this.insert(col, data, uid);
-		})
+		}))
 	}
 	deleteById(col: string, uid: string) {
 		return from(this.afs.collection(col).doc(uid).delete())

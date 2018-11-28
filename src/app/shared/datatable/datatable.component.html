@@ -10,10 +10,10 @@
 		<button (click)='filterColumn()' mat-menu-item>
 			<mat-icon>view_column</mat-icon> Kolom
 		</button>
-		<button (click)='refresh()' mat-menu-item>
+		<button *ngIf='showRefreshMenu' (click)='refresh()' mat-menu-item>
 			<mat-icon>refresh</mat-icon> Segarkan
 		</button>
-		<button (click)='printAll()' mat-menu-item>
+		<button *ngIf='showPrintAllMenu' (click)='printAll()' mat-menu-item>
 			<mat-icon>print</mat-icon> PDF
 		</button>
 		<!-- <button *ngIf='showDefaultMainMenu' mat-menu-item [matMenuTriggerFor]='printMenu'>
@@ -63,7 +63,12 @@
 					{{ col.label }}
 				</th>
 				<td *matCellDef='let row' mat-cell>
-					{{ row[col.id] }}
+					<ng-container *ngIf="col.is == 'img'; else e;">
+						<img [src]="sanitizer.bypassSecurityTrustResourceUrl(row[col.id])" style="max-height: 64px; max-width: 64px;">
+					</ng-container>
+					<ng-template #e>
+						{{ row[col.id] }}
+					</ng-template>
 				</td>
 			</ng-container>
 			<ng-container matColumnDef='{{col.id+"_search"}}'>

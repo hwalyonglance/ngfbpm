@@ -1,0 +1,21 @@
+<form [formGroup]='form' fxLayout='column' (ngSubmit)='submit()'>
+	<div fxFlex>
+		<mat-form-field>
+			<input formControlName='name' matInput name='name' placeholder="Nama">
+		</mat-form-field>
+	</div>
+	<div fxFlex>
+		<mat-form-field>
+			<textarea formControlName='desc' matInput name='desc' placeholder="Deskripsi"></textarea>
+		</mat-form-field>
+	</div>
+	<div fxFlex>
+		{{ value | json }}
+		{{ valid }}
+	</div>
+	<div fxFlex fxLayout='column'>
+		<mat-checkbox fxFlex formControlName='private'>Private</mat-checkbox>
+		<span fxFlex='1 1 fill'></span>
+		<button fxFlex color='primary' [disabled]='!valid' mat-button type="submit">Submit</button>
+	</div>
+</form>

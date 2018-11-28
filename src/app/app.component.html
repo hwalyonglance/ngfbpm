@@ -1,6 +1,0 @@
-<button *ngIf='!auth.account' (click)='google()'>google</button>
-<button *ngIf='auth.account' (click)='auth.signOut()'>logout</button>
-<pre>
-	{{ auth.account | async | json }}
-</pre>
-<app-datatable [columns]='columns' col='accounts'></app-datatable>

@@ -1,0 +1,33 @@
+<form [formGroup]='form' fxLayout='column'>
+	<div fxFlex>
+		<mat-form-field>
+			<input formControlName='title' matInput name="title" placeholder="Judul" required>
+		</mat-form-field>
+	</div>
+	<div fxFlex>
+		<mat-form-field>
+			<textarea formControlName='desc' matInput matTextareaAutosize matAutosizeMaxRows='4' matAutosizeMaxRows='8' placeholder="Deskripsi" required></textarea>
+		</mat-form-field>
+	</div>
+	<div fxFlex>
+		<mat-form-field>
+			<mat-chip-list #labelsChipRef>
+				<mat-chip *ngFor='let label of value.labels'>
+					{{ label }}
+					<mat-icon matChipRemove>cancel</mat-icon>
+				</mat-chip>
+			</mat-chip-list>
+			<input [formControl]='labelsChipCtrl' [matChipInputFor]='labelsChipRef'
+				[matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)='addLabel($event)'
+				matInput name="labels" placeholder="Tambahkan label">
+		</mat-form-field>
+	</div>
+	<div fxFlex>
+		<pre>
+			{{ value | json }}
+		</pre>
+	</div>
+	<div fxFlex fxLayout='row' fxLayoutAlign='end'>
+		<button color='primary' [disabled]='!valid' mat-raised-button type="button">Submit</button>
+	</div>
+</form>

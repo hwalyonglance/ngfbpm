@@ -83,9 +83,8 @@ export class AuthService {
 	resetPassword(email: string): Observable<void> {
 		return from(firebase.auth().sendPasswordResetEmail(email))
 	}
-	signOut(): Observable<{}> {
-		return from(this._afa.auth.signOut())
-			.pipe(tap(() => this._account.next(null)))
+	signOut() {
+		from(this._afa.auth.signOut()).subscribe(() => this._account.next(null))
 	}
 	state() {
 		return this._afa.authState
