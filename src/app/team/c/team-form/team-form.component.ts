@@ -1,14 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 
-import { ApiService, AuthService } from '../../shared'
+import { ApiService, AuthService } from '../../../shared'
 
 @Component({
-	selector: 'app-project-form',
-	templateUrl: './project-form.component.html',
+	selector: 'app-team-form',
+	templateUrl: './team-form.component.html',
 	styles: []
 })
-export class ProjectFormComponent implements OnInit {
+export class TeamFormComponent implements OnInit {
 	get valid() { return this.form.valid }
 	get value() { return this.form.value }
 	set value(value) {
@@ -29,7 +29,7 @@ export class ProjectFormComponent implements OnInit {
 	buildForm() {
 		this.form = this._fb.group({
 			uid: [this._api.createId(), Validators.required],
-			ownerUid: ['this._auth.account.uid', Validators.required],
+			leaderUid: ['this._auth.account.uid', Validators.required],
 			name: ['', Validators.required],
 			desc: ['', Validators.required],
 			private: [true, Validators.required],
@@ -37,17 +37,18 @@ export class ProjectFormComponent implements OnInit {
 			createdAt: [this._api.timestamp, Validators.required],
 			updatedAt: [this._api.timestamp, Validators.required],
 		})
-		this._auth.state().subscribe(acc => {
+		let authState = this._auth.state();
+		authState.subscribe(acc => {
 			if (acc) {
-				this.form.get('ownerUid').setValue(acc.uid)
+				this.form.get('leaderUid').setValue(acc.uid)
+				authState = null
 			}
 		})
 	}
 	submit() {
 		const val = this.value
-		this._api.upsert('projects', val.uid, val).subscribe(null,null,() => {
-			alert('reset')
-			this.form.reset()
+		this._api.upsert('teams', val.uid, val).subscribe(null,null,() => {
+			this.buildForm()
 		})
 	}
 }

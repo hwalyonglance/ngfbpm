@@ -2,21 +2,25 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout'
 import { ReactiveFormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop'
 import {
 	MatButtonModule,
 	MatChipsModule,
+	MatExpansionModule,
 	MatFormFieldModule,
 	MatIconModule,
 	MatInputModule,
 	MatSelectModule,
 } from '@angular/material'
 
-import { TaskFormComponent } from './task-form/task-form.component';
-import { TaskListComponent } from './task-list/task-list.component';
+import { IssueFormComponent } from './issue-form/issue-form.component';
+import { IssueBoardComponent } from './issue-board/issue-board.component';
+import { IssuePerAsigneeComponent } from './issue-per-asignee/issue-per-asignee.component';
 
 const COMPONENTS = [
-	TaskFormComponent,
-	TaskListComponent,
+	IssueFormComponent,
+	IssueBoardComponent,
+	IssuePerAsigneeComponent,
 ]
 
 const MODULES = [
@@ -25,8 +29,10 @@ const MODULES = [
 
 	FlexLayoutModule,
 
+	DragDropModule,
 	MatButtonModule,
 	MatChipsModule,
+	MatExpansionModule,
 	MatFormFieldModule,
 	MatIconModule,
 	MatInputModule,
@@ -41,4 +47,4 @@ const MODULES = [
 		...MODULES
 	]
 })
-export class TaskModule { }
+export class IssueModule {}

@@ -14,7 +14,7 @@ import {
 	FileExplorerModule,
 	FileUploaderModule,
 	WysiwygHtmlEditorModule,
-	TaskModule,
+	IssueModule,
 } from './shared'
 
 import { environment } from '../environments/environment'
@@ -43,7 +43,7 @@ import { IndexComponent } from './c/index/index.component';
 		MatChipsModule,
 
 		DatatableModule, DialogModule, MultipleSelectModule, FileExplorerModule,
-		FileUploaderModule, WysiwygHtmlEditorModule, DragDropModule, TaskModule,
+		FileUploaderModule, WysiwygHtmlEditorModule, DragDropModule, IssueModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent]

@@ -1,0 +1,9 @@
+{{ assignedIssues$ }}asd
+<ng-container *ngIf='assignedIssues$ | async as ai'>
+	<mat-expansion-panel>
+		<mat-expansion-panel-header>
+			Unassigned Issue
+		</mat-expansion-panel-header>
+		<app-issue-per-asignee [issues]='ai'></app-issue-per-asignee>
+	</mat-expansion-panel>
+</ng-container>

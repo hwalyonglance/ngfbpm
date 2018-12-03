@@ -1,8 +1,1 @@
-<button *ngIf='!auth.account' (click)='google()'>google</button>
-<button *ngIf='auth.account' (click)='auth.signOut()'>logout</button>
-<pre>
-	{{ auth.account | json }}
-</pre>
 <app-datatable [columns]='columns' col='accounts' [showCreateMenu]='false' [showRowMenuTrigger]='false' titleText='accounts'></app-datatable>
-<app-task-form></app-task-form>
-<app-dnd></app-dnd>

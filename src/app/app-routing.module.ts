@@ -5,7 +5,7 @@ import { IndexComponent } from './c/index/index.component'
 
 const routes: Routes = [
 	{ path: '', component: IndexComponent } ,
-	{ path: 'project', loadChildren: './project/project.module#ProjectModule' },
+	{ path: 'team', loadChildren: './team/team.module#TeamModule' },
 	{ path: '**', pathMatch: 'full', redirectTo: '/' },
 ];
 

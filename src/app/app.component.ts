@@ -6,7 +6,10 @@ import { ApiService, AuthService } from './shared'
 	selector: 'app-root',
 	template: `
 		<a routerLink='/'>Home</a>
-		<a routerLink='/project'>Project</a>
+		<a routerLink='/team'>Team</a>
+		<button *ngIf='!auth.account' (click)='auth.googleLogin()'>Google</button>
+		<button *ngIf='auth.account' (click)='auth.signOut()'>signOut</button>
+		<pre>{{ auth.account | json }}</pre>
 		<router-outlet></router-outlet>
 	`,
 	styles: [``]

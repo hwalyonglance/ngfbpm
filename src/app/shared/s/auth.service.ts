@@ -23,7 +23,7 @@ export class AuthService {
 	constructor(
 		private _afa: AngularFireAuth,
 		private _afs: AngularFirestore,
-		public api: ApiService,
+		private _api: ApiService,
 		private _matDialog: MatDialog,
 	) {
 		_afa.authState.subscribe(account => {
@@ -39,7 +39,7 @@ export class AuthService {
 					providerId: account.providerId,
 				}
 				this._account.next(acc)
-				api.upsert('accounts', acc['uid'], acc)
+				_api.upsert('accounts', acc['uid'], acc)
 			}
 		})
 	}

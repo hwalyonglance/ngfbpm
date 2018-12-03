@@ -2,15 +2,16 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { COMMA, ENTER } from '@angular/cdk/keycodes'
 import { MatChipInputEvent } from '@angular/material'
+import { ActivatedRoute, Router } from '@angular/router'
 
 import { ApiService, AuthService } from '../../s'
 
 @Component({
-	selector: 'app-task-form',
-	templateUrl: './task-form.component.html',
+	selector: 'app-issue-form',
+	templateUrl: './issue-form.component.html',
 	styles: []
 })
-export class TaskFormComponent implements OnInit {
+export class IssueFormComponent implements OnInit {
 	get valid() { return this.form.valid }
 	get value() { return this.form.value }
 	set value(form) {
@@ -26,12 +27,12 @@ export class TaskFormComponent implements OnInit {
 		private _fb: FormBuilder,
 		private _api: ApiService,
 		private _auth: AuthService,
+		private _activatedRoute: ActivatedRoute,
+		private _router: Router,
 	) {
 		this.buildForm()
 	}
-	ngOnInit() {
-		console.log(this.value)
-	}
+	ngOnInit() {}
 	addLabel(event: MatChipInputEvent): void {
 		const input = event.input;
 		const value = event.value;
@@ -53,19 +54,27 @@ export class TaskFormComponent implements OnInit {
 	buildForm() {
 		this.form = this._fb.group({
 			uid: [this._api.createId(), Validators.required],
-			projectUid: ['this._project.info.uid', Validators.required],
-			posterUid: ['this._auth.account.uid', Validators.required],
+			reporterUid: ['this._auth.account.uid', Validators.required],
+			assigneeUid: [''],
 			title: ['', Validators.required],
 			desc: ['', Validators.required],
-			labels: [[], Validators.required],
-			assginTo: ['', Validators.required],
+			labels: [[]],
+			state: ['TO_DO', Validators.required],
 			createdAt: [this._api.timestamp, Validators.required],
 			updatedAt: [this._api.timestamp, Validators.required],
 		})
-		this._auth.state().subscribe(acc => {
+		let authState$ = this._auth.state()
+		authState$.subscribe(acc => {
 			if (acc) {
-				this.form.get('posterUid').setValue(acc.uid)
+				this.form.get('reporterUid').setValue(acc.uid)
 			}
+			authState$ = null
 		})
+	}
+	submit() {
+		const val = this.value
+		const { teamUid, projectUid } = this._activatedRoute.snapshot.params
+		this._api.upsert('teams/'+teamUid+'/projects/'+projectUid+'/issues', val.uid, val)
+			.subscribe(r => this.buildForm())
 	}
 }

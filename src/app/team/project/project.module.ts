@@ -9,18 +9,22 @@ import {
 	MatInputModule,
 } from '@angular/material'
 
+import { DatatableModule, IssueModule } from '../../shared'
+
 import { ProjectRoutingModule } from './project-routing.module';
 
 import { ProjectComponent } from './project.component';
-import { ProjectListComponent } from './project-list/project-list.component';
-import { ProjectTaskListComponent } from './project-task-list/project-task-list.component';
-import { ProjectFormComponent } from './project-form/project-form.component';
+import { ProjectListComponent } from './c/project-list/project-list.component';
+import { ProjectIssueBoardComponent } from './c/project-issue-board/project-issue-board.component';
+import { ProjectFormComponent } from './c/project-form/project-form.component';
+import { ProjectDetailComponent } from './c/project-detail/project-detail.component';
 
 const COMPONENTS = [
 	ProjectComponent,
 	ProjectListComponent,
-	ProjectTaskListComponent,
+	ProjectIssueBoardComponent,
 	ProjectFormComponent,
+	ProjectDetailComponent,
 ]
 
 const MODULES = [
@@ -28,6 +32,8 @@ const MODULES = [
 	FlexLayoutModule,
 	ReactiveFormsModule,
 
+	DatatableModule,
+	IssueModule,
 	ProjectRoutingModule,
 
 	MatCheckboxModule,
@@ -40,8 +46,6 @@ const MODULES = [
 	declarations: [...COMPONENTS],
 	exports: [...COMPONENTS, ...MODULES],
 	entryComponents: [...COMPONENTS],
-	imports: [
-		...MODULES
-	]
+	imports: [...MODULES],
 })
 export class ProjectModule { }

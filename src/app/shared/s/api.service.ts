@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore'
+import { AngularFirestore, QueryFn } from '@angular/fire/firestore'
 
 import { BehaviorSubject, Observable, of, from } from 'rxjs';
 import { map, filter, take, tap } from 'rxjs/operators'
@@ -26,8 +26,11 @@ export class ApiService {
 	createId() {
 		return this.afs.createId()
 	}
-	get(col: string) {
-		return this.afs.collection(col)
+	col(col: string, queryFn?: QueryFn) {
+		return this.afs.collection(col, queryFn)
+	}
+	doc(doc: string) {
+		return this.afs.doc(doc)
 	}
 	insert(col: string, data, uid: string='') {
 		const _data = {

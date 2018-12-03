@@ -24,7 +24,7 @@ export class IndexComponent implements OnInit {
 		public api: ApiService,
 	) {}
 	ngOnInit(){
-		this.api.get('accounts').valueChanges().subscribe(v => console.log('valueChanges', v))
+		this.api.col('accounts').valueChanges().subscribe(v => console.log('valueChanges', v))
 	}
 	google() {
 		this.auth.googleLogin()

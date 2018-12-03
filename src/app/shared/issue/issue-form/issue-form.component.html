@@ -28,6 +28,6 @@
 		</pre>
 	</div>
 	<div fxFlex fxLayout='row' fxLayoutAlign='end'>
-		<button color='primary' [disabled]='!valid' mat-raised-button type="button">Submit</button>
+		<button (click)='submit()' color='primary' [disabled]='!valid' mat-button type="button">Submit</button>
 	</div>
 </form>

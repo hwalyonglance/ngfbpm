@@ -92,14 +92,14 @@ export class DatatableComponent<T={id:string}> implements AfterViewInit, AfterCo
 						.subscribe(res => {
 							this._dialog.open(this.deleteByIdSuccessTemplateRef, {
 								data: {
-									id: row.id
+									id: row.uid
 								}
 							})
 						}, error => {
 							this._dialog.open(this.httpResponseErrorTemplateRef, {
 								data: {
 									error,
-									title: 'Gagal menghapus data '+row.id
+									title: 'Gagal menghapus data '+row.uid
 								}
 							})
 						})
@@ -125,13 +125,13 @@ export class DatatableComponent<T={id:string}> implements AfterViewInit, AfterCo
 		})
 		multipleSelect.callback = (e) => {
 			this.columns = multipleSelect.data.map(d => {
-					return {
-						id: d.id,
-						icon: d.icon,
-						label: d.label,
-						hidden: !d.selected
-					}
-				})
+				return {
+					id: d.id,
+					icon: d.icon,
+					label: d.label,
+					hidden: !d.selected
+				}
+			})
 		}
 		this.multipleSelectComponentDialogRef.afterClosed().subscribe(_ => this.multipleSelectComponentDialogRef = multipleSelect = undefined)
 	}
@@ -244,7 +244,7 @@ export class DatatableComponent<T={id:string}> implements AfterViewInit, AfterCo
 		this.setData()
 	}
 	setData(params = {}, errorTitle = 'Gagal mengambil data') {
-		this._api.get(this.col)
+		this._api.col(this.col)
 			.valueChanges()
 			.subscribe((res: any) => {
 				console.log(res)

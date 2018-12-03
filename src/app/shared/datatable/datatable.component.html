@@ -85,7 +85,7 @@
 				<button *ngIf='showRowMenuTrigger' [matMenuTriggerFor]='actionMenu' mat-icon-button type='button'>
 					<mat-icon>more_vert</mat-icon>
 				</button>
-				<mat-menu #actionMenu='matMenu' xPosition='before'>
+				<mat-menu #actionMenu='matMenu'>
 					<!-- <button (click)='handleEvent("PrintById", row[id])' mat-menu-item>
 						<mat-icon>print</mat-icon>
 						Print
@@ -115,7 +115,7 @@
 <mat-paginator #paginator [length]='dataSource.data.length' [pageIndex]='0' [pageSize]='10' [pageSizeOptions]='[10, 25, 50, 125, 250]'></mat-paginator>
 
 <ng-template #deleteByIdTemplateRef let-data let-dialogRef='dialogRef'>
-	<h1 mat-dialog-title>Hapus data dengan id {{ data.id }}</h1>
+	<h1 mat-dialog-title>Hapus data dengan id {{ data.uid }}</h1>
 	<div mat-dialog-content>
 		<p>
 			Data tidak bisa dikembalikan setelah dihapus.
@@ -136,7 +136,7 @@
 	<!-- <h1 mat-dialog-title></h1> -->
 	<div mat-dialog-content>
 		<p>
-			Data dengan id {{ data.id }} berhasil dihapus
+			Data dengan id {{ data.uid }} berhasil dihapus
 		</p>
 	</div>
 	<div mat-dialog-actions>
